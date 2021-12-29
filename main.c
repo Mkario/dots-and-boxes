@@ -24,7 +24,7 @@
 int w;
 char ww[N];
 
-void StartMenu()
+void StartMenu()                        // The StartMenu fn. contains the first interface and it leads u to the other fns. according to your choice
 {
     printf(YEL"\t\t\t\t\t    *Welcome*\n"reset);
     printf(YEL"\t\t\t\t\t    *********\n"reset);
@@ -54,11 +54,13 @@ void StartMenu()
     }
     system("cls");
 
-    switch(w)
+    switch(w)                                               // this statement is the one which lead u to the other fns. according to your choice.
     {
         case 1:
             NewGame();
             break;
+        case 5:
+            return 0;
 
     }
 }
@@ -74,19 +76,29 @@ char yy[N];
 int y;
 int c1[N][N];
 int c2[N][N];
+char Name1[N];
+char Name2[N];
+char Name3[N]={'C','o','m','p','u','t','e','r','\0'};
 
 
-int Nov;                                        //// no. of moves
-int Dir;                                        //// dots in a row
-char Length;
+int Nov;                                    //// no. of moves
+int RL;                                      ////remaining lines
+int BC;                                        //// boxes co-ordinates
+char Length;                                   //// refers to the max row and col place that the user could use < it
+
+int turn;
+int score1;
+int score2;
+int counter1;
+int counter2;
 
 void NewGame()
 {
         printf(RED"Choose the difficulty:\n**********************"reset);                           //difficulty
-        printf(L_MAG"\nBeginner(enter: 1)\n"reset);
-        printf(L_MAG"Semi pro(enter: 2)\n"reset);
-        printf(L_MAG"Professional(enter: 3)\n"reset);
-        printf(L_MAG"Expert(enter: 4)\n\n"reset);
+        printf(L_CYN"\nBeginner(enter: 1)\n"reset);
+        printf(L_CYN"Semi pro(enter: 2)\n"reset);
+        printf(L_CYN"Professional(enter: 3)\n"reset);
+        printf(L_CYN"Expert(enter: 4)\n\n"reset);
         printf("Enter 0 to return to the main menu\n\n");
         printf("Enter your choice:");
         scanf("%s",&zz);
@@ -111,7 +123,7 @@ void NewGame()
         else
         {
             system("cls");
-            printf(L_YEL"Choose mode:\n************\n"reset);                                             //#of players
+            printf(YEL"Choose mode:\n************\n"reset);                                             //#of players
             printf(L_GRN"One player mode(enter: 1)\n"reset);
             printf(L_GRN"Two player mode(enter: 2)\n\n"reset);
             printf("Enter 0 to return to the main menu\n\n");
@@ -138,30 +150,87 @@ void NewGame()
             else
             {
                 system("cls");
+                if(r==1)                                                                            //taking names
+                {
+                    fflush(stdin);
+                    printf(L_RED"Enter your Name:"reset);
+                    gets(Name1);
+                    while(1)                                                                        //checking them
+                    {
+                        if(Name1[0]=='\0')
+                           {
+                                printf(L_RED"Enter your Name:"reset);
+                                gets(Name1);
+                           }
+                        else
+                            break;
+                    }
+
+                }
+                else if (r==2)                                                                          //taking names
+                {
+                    fflush(stdin);
+                    printf(L_RED"Enter player one Name:"reset);
+                    gets(Name1);
+                    while(1)                                                                            //checking them
+                    {
+                        if(Name1[0]=='\0')
+                           {
+                                printf(L_RED"Enter your Name:"reset);
+                                gets(Name1);
+                           }
+                        else
+                            break;
+                    }
+                    printf(L_RED"Enter player two Name:"reset);
+                    gets(Name2);
+                    while(1)
+                    {
+                        if(Name2[0]=='\0')
+                           {
+                                printf(L_RED"Enter your Name:"reset);
+                                gets(Name2);
+                           }
+                        else
+                            break;
+                    }
+                }
+
+                a:                          //// the redo point
+                turn=1;
+                score1=0;
+                score2=0;
+                counter1=0;
+                counter2=0;
+                system("cls");
                 switch(z)
                 {
                     case 1:
                         n=5;
                         Nov=12;
-                        Dir=3;
+                        RL=12;
+                        BC=3;
                         Length='5';
                         break;
                     case 2:
                         n=7;
                         Nov=24;
-                        Dir=4;
+                        RL=24;
+                        BC=5;
                         Length='7';
                         break;
                     case 3:
                         n=9;
                         Nov=40;
-                        Dir=5;
+                        RL=40;
+                        BC=7;
                         Length='9';
                         break;
                     case 4:
                         n=11;
                         Nov=60;
-                        Dir=6;
+                        RL=60;
+                        BC=9;
                         Length='11';
                         break;
                 }
@@ -205,12 +274,45 @@ void NewGame()
                 printf(" %d",i);
                 printf("\n");
                 }
-            }                                                                                   ///
-            int turn=1;                                                                         ////
-            int score1=0;
-            int score2=0;
-            int TC1=1;
-            int TC2=1;
+                printf("\n\n");
+                printf(RED);
+                printf("Player 1 Name: %s",Name1);
+                printf(reset);
+                printf(L_GRN);
+                if (r==1)
+                    printf("\t\t\tPlayer 2 Name: %s",Name3);
+                else if(r==2)
+                    printf("\t\t\tPlayer 2 Name: %s",Name2);
+                printf(reset);
+                printf(RED);
+                printf("\n\nPlayer 1 Score: %d",score1);
+                printf(reset);
+                printf(L_GRN);
+                printf("\t\t\tPlayer 2 Score: %d",score2);
+                printf(reset);
+                printf(RED);
+                printf("\n\nPlayer 1 # of moves: %d",counter1);
+                printf(reset);
+                printf(L_GRN);
+                printf("\t\t\tPlayer 2 # of moves: %d",counter2);
+                printf(reset);
+                printf(L_BLU);
+                printf("\n\n# of remaining lines: %d",RL);
+                printf(reset);
+                printf(L_BLU);
+                printf("\n\nPlayer Turn: %d",turn);
+                printf(reset);
+                printf(L_YEL);
+                printf("\n\nEnter (0,0) for Start Menu");
+                printf("\nEnter (1,1) for EXIT");
+                printf("\nEnter (2,2) for REDO");
+                printf(reset);
+
+
+            }
+
+            int TC1=0;
+            int TC2=0;
             int p , k;
             while(Nov)
             {
@@ -236,9 +338,28 @@ void NewGame()
                     }
                     scanf("%s",&yy);
                 }
-                if(matrix[x][y]==32 && ((x%2==0 && y%2!=0) || (x%2!=0 && y%2==0)))
+
+
+                if(x==0 && y==0)        //for StartMenu
+                {
+                    system("cls");
+                    StartMenu();
+                }
+                else if(x==1 && y==1)        // for exit
+                {
+                        system("cls");
+                        return 0;
+                }
+                else if(x==2 && y==2)     //for redo
+                    goto a;
+               // else if(x==3 && y==3)  for undo
+
+
+
+                else if(matrix[x][y]==32 && ((x%2==0 && y%2!=0) || (x%2!=0 && y%2==0)))
                 {
                     Nov--;
+                    RL=Nov;
                     if((x%2==0) && (y%2!=0))
                     {
                         if(turn==1)
@@ -258,9 +379,10 @@ void NewGame()
                         matrix[x][y]=186;
                     }
 
-                        for(p=1;p<=Dir;p+=2)
+
+                        for(p=1;p<=BC;p+=2)
                         {
-                            for(k=1;k<=Dir;k+=2)
+                            for(k=1;k<=BC;k+=2)
                                 {
                                     if((matrix[p+1][k]!=32)&&(matrix[p-1][k]!=32)&&(matrix[p][k+1]!=32)&&(matrix[p][k-1]!=32))
                                     {
@@ -271,6 +393,7 @@ void NewGame()
                                                 score1++;
                                                 matrix[p][k]=219;
                                                 c1[p][k]=219;
+                                                TC1++;
                                             }
 
                                        }
@@ -281,20 +404,46 @@ void NewGame()
                                                 score2++;
                                                 matrix[p][k]=219;
                                                 c2[p][k]=219;
+                                                TC2++;
                                             }
-                                       }
+                                        }
                                     }
                                 }
                         }
 
+
+                    if(TC1==1 || TC1==2)
+                        {
+                            turn=2;
+                            counter2--;
+                            counter1++;
+                        }
+                    else if(TC2==1 || TC2==2)
+                        {
+                            turn=1;
+                            counter1--;
+                            counter2++;
+                        }
+
+                    TC1=0;
+                    TC2=0;
+
                     if (turn==1)
+                    {
+                        counter1++;
                         turn=2;
+                    }
+
                     else if(turn==2)
+                    {
+                        counter2++;
                         turn=1;
+                    }
+
                 }
                 system("cls");
                 int i,j;
-                for( i=0;i<n;i++)
+                for(i=0;i<n;i++)
                 {
                    printf("%d ",i);
                 }
@@ -369,7 +518,56 @@ void NewGame()
                 printf(" %d",i);
                 printf("\n");
                 }
+                printf("\n\n");
+                printf(RED);
+                printf("Player 1 Name: %s",Name1);
+                printf(reset);
+                printf(L_GRN);
+                if (r==1)
+                    printf("\t\t\tPlayer 2 Name: %s",Name3);
+                else if(r==2)
+                    printf("\t\t\tPlayer 2 Name: %s",Name2);
+                printf(reset);
+                printf(RED);
+                printf("\n\nPlayer 1 Score: %d",score1);
+                printf(reset);
+                printf(L_GRN);
+                printf("\t\t\tPlayer 2 Score: %d",score2);
+                printf(reset);
+                printf(RED);
+                printf("\n\nPlayer 1 # of moves: %d",counter1);
+                printf(reset);
+                printf(L_GRN);
+                printf("\t\t\tPlayer 2 # of moves: %d",counter2);
+                printf(reset);
+                printf(L_BLU);
+                printf("\n\n# of remaining lines: %d",RL);
+                printf(reset);
+                printf(L_BLU);
+                printf("\n\nPlayer Turn: %d",turn);
+                printf(reset);
+                printf(L_YEL);
+                printf("\n\nEnter (0,0) for Start Menu");
+                printf("\nEnter (1,1) for EXIT");
+                printf("\nEnter (2,2) for REDO");
+                printf(reset);
+
+
+
             }
+            printf(L_MAG);
+            if(score1>score2)
+                printf("\n\nThe Winner is: %s",Name1);
+            else if(score1<score2)
+                {
+                if(r==1)
+                    printf("\n\nThe Winner is: %s",Name3);
+                else if(r==2)
+                    printf("\n\nThe Winner is: %s",Name2);
+                }
+            else if(score1==score2)
+                printf("\n\nDraw");
+            printf(reset);
         }
 }
 
@@ -380,7 +578,6 @@ int main()
 {
     system("COLOR");
     StartMenu();
-
-
     return 0;
 }
+
