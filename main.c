@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #define N 100
-
+#include<time.h>
 #define BLK "\e[0;30m"
 #define RED "\e[0;31m"
 #define GRN "\e[0;32m"
@@ -91,7 +91,8 @@ int score1;
 int score2;
 int counter1;
 int counter2;
-
+clock_t t1,t2,t3;
+int seconds=0;minutes=0,hours=0;
 void NewGame()
 {
         printf(RED"Choose the difficulty:\n**********************"reset);                           //difficulty
@@ -195,6 +196,11 @@ void NewGame()
                             break;
                     }
                 }
+
+
+
+
+
 
                 a:                          //// the redo point
                 turn=1;
@@ -314,6 +320,7 @@ void NewGame()
             int TC1=0;
             int TC2=0;
             int p , k;
+            clock_t t1=clock();
             while(Nov)
             {
                 printf("\n\n\nEnter Row no. :");
@@ -338,7 +345,7 @@ void NewGame()
                     }
                     scanf("%s",&yy);
                 }
-
+               clock_t t2=clock();
 
                 if(x==0 && y==0)        //for StartMenu
                 {
@@ -544,13 +551,25 @@ void NewGame()
                 printf("\n\n# of remaining lines: %d",RL);
                 printf(reset);
                 printf(L_BLU);
-                printf("\n\nPlayer Turn: %d",turn);
-                printf(reset);
-                printf(L_YEL);
+                clock_t t3=(t2-t1)/CLOCKS_PER_SEC;
+                minutes=t3/60;
+                seconds=t3%60;
+                if (minutes >= 60)
+                 {
+                 hours = minutes / 60;
+                 minutes = minutes % 60;
+                 }
+                printf("\t\tTime passed : %d:%d:%d",hours,minutes,seconds);
+
                 printf("\n\nEnter (0,0) for Start Menu");
                 printf("\nEnter (1,1) for EXIT");
                 printf("\nEnter (2,2) for REDO");
                 printf(reset);
+
+                printf(L_BLU);
+                printf("\n\nPlayer Turn: %d",turn);
+                printf(reset);
+                printf(L_YEL);
 
 
 
@@ -569,9 +588,9 @@ void NewGame()
                 printf("\n\nDraw");
             printf(reset);
         }
+
+
 }
-
-
 
 
 int main()
@@ -580,4 +599,3 @@ int main()
     StartMenu();
     return 0;
 }
-
