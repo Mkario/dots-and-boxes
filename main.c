@@ -304,6 +304,8 @@ void NewGame()
                 printf(reset);
                 printf(L_BLU);
                 printf("\n\n# of remaining lines: %d",RL);
+                printf("\t\tTime passed : 0:0:0);
+
                 printf(reset);
                 printf(L_BLU);
                 printf("\n\nPlayer Turn: %d",turn);
