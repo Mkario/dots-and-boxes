@@ -81,18 +81,29 @@ char Name2[N];
 char Name3[N]={'C','o','m','p','u','t','e','r','\0'};
 
 
-int Nov;                                    //// no. of moves
+int Nov;                                        //// no. of moves
+int Nob;                                    //// no. of boxes
 int RL;                                      ////remaining lines
 int BC;                                        //// boxes co-ordinates
 char Length;                                   //// refers to the max row and col place that the user could use < it
 
+int URA[N][4];
+int sc1;
+int sc2;
+int lol;
+int lmao;
+
 int turn;
 int score1;
 int score2;
+int index1;
+int index2;
 int counter1;
 int counter2;
+int totalmoves;
 clock_t t1,t2,t3;
 int seconds=0;minutes=0,hours=0;
+
 void NewGame()
 {
         printf(RED"Choose the difficulty:\n**********************"reset);                           //difficulty
@@ -198,16 +209,15 @@ void NewGame()
                 }
 
 
-
-
-
-
-                a:                          //// the redo point
                 turn=1;
                 score1=0;
                 score2=0;
+                sc1=0;
+                sc2=0;
+                lol=0;
                 counter1=0;
                 counter2=0;
+                totalmoves=-1;
                 system("cls");
                 switch(z)
                 {
@@ -304,48 +314,111 @@ void NewGame()
                 printf(reset);
                 printf(L_BLU);
                 printf("\n\n# of remaining lines: %d",RL);
-                printf("\t\tTime passed : 0:0:0);
-
                 printf(reset);
                 printf(L_BLU);
                 printf("\n\nPlayer Turn: %d",turn);
                 printf(reset);
+                printf(L_BLU);
+                printf("\n\nTime passed : %d:%d:%d",hours,minutes,seconds);
+                printf(reset);
                 printf(L_YEL);
                 printf("\n\nEnter (0,0) for Start Menu");
-                printf("\nEnter (1,1) for EXIT");
-                printf("\nEnter (2,2) for REDO");
                 printf(reset);
 
 
             }
-
+            int count=0;
+            int checky=Nov;
             int TC1=0;
             int TC2=0;
             int p , k;
+            int CNov=Nov;
+            lmao=0;
+            int Miki , Tao;
             clock_t t1=clock();
-            while(Nov)
+            switch(z)
             {
-                printf("\n\n\nEnter Row no. :");
-                scanf("%s",&xx);
-                while(1)
+                case 1:
+                    Nob=4;
+                case 2:
+                    Nob=9;
+                case 3:
+                    Nob=16;
+                case 4:
+                    Nob=25;
+            }
+            while(RL)
+            {
+                if(r==1)
                 {
-                    if(xx[0]>='0' && xx[0]<Length &&xx[1]=='\0')           //////////// under exec.
+                    if(turn==1)
                     {
-                        x=xx[0]-'0';
-                        break;
+                        printf("\n\n\nEnter Row no. :");
+                        scanf("%s",&xx);
+                        while(1)
+                        {
+                            if(xx[0]>='0' && xx[0]<Length &&xx[1]=='\0')
+                            {
+                                x=xx[0]-'0';
+                                break;
+                            }
+                            scanf("%s",&xx);
+                        }
+                        printf("Enter col no. :");
+                        scanf("%s",&yy);
+                        while(1)
+                        {
+                            if(yy[0]>='0' && yy[0]<Length &&yy[1]=='\0')
+                            {
+                                y=yy[0]-'0';
+                                break;
+                            }
+                            scanf("%s",&yy);
+                        }
                     }
-                    scanf("%s",&xx);
+                    else if(turn==2)
+                    {
+
+                        x=-1;
+                        y=-1;
+                        for(index1=0;index1<n;index1++)
+                        {
+                            for(index2=0;index2<n;index2++)
+                            {
+                                if( matrix[index1][index2]==32 && ((index1%2==0 && index2%2!=0) || (index1%2!=0 && index2%2==0)))
+                                {
+                                    x=index1;
+                                    y=index2;
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
-                printf("Enter col no. :");
-                scanf("%s",&yy);
-                while(1)
+                else if(r==2)
                 {
-                    if(yy[0]>='0' && yy[0]<Length &&yy[1]=='\0')
-                    {
-                        y=yy[0]-'0';
-                        break;
-                    }
-                    scanf("%s",&yy);
+                        printf("\n\n\nEnter Row no. :");
+                        scanf("%s",&xx);
+                        while(1)
+                        {
+                            if(xx[0]>='0' && xx[0]<Length &&xx[1]=='\0')
+                            {
+                                x=xx[0]-'0';
+                                break;
+                            }
+                            scanf("%s",&xx);
+                        }
+                        printf("Enter col no. :");
+                        scanf("%s",&yy);
+                        while(1)
+                        {
+                            if(yy[0]>='0' && yy[0]<Length &&yy[1]=='\0')
+                            {
+                                y=yy[0]-'0';
+                                break;
+                            }
+                            scanf("%s",&yy);
+                        }
                 }
                clock_t t2=clock();
 
@@ -354,21 +427,148 @@ void NewGame()
                     system("cls");
                     StartMenu();
                 }
-                else if(x==1 && y==1)        // for exit
+                else if(x==1 && y==1)
                 {
-                        system("cls");
-                        return 0;
+                    if(totalmoves!=-1)
+                        {
+                            RL++;
+                            turn=URA[totalmoves][2];    //////
+                            Miki=URA[totalmoves][0];
+                            Tao=URA[totalmoves][1];
+
+                            if(URA[totalmoves][2]==1)
+                            {
+                                c1[Miki][Tao]=32;
+                                matrix[Miki][Tao]=32;
+                                counter1--;
+                            }
+                            else if(URA[totalmoves][2]==2)
+                            {
+                                c2[Miki][Tao]=32;
+                                matrix[Miki][Tao]=32;
+                                counter2--;
+                            }
+                            count++;
+                            totalmoves--;
+                            for(p=1;p<=BC;p+=2)
+                                for(k=1;k<=BC;k+=2)
+                                    {
+                                        matrix[p][k]=32;
+                                        score1=0;
+                                        score2=0;
+                                    }
+
+                            for(p=1;p<=BC;p+=2)
+                            {
+                                for(k=1;k<=BC;k+=2)
+                                    {
+                                        if((matrix[p+1][k]!=32)&&(matrix[p-1][k]!=32)&&(matrix[p][k+1]!=32)&&(matrix[p][k-1]!=32))
+                                        {
+                                            if(matrix[p][k]!=219)
+                                            {
+                                                matrix[p][k]=219;
+                                                if(matrix[p][k]==c1[p][k])
+                                                {
+                                                    score1++;
+                                                }
+                                                else if(matrix[p][k]==c2[p][k])
+                                                {
+                                                    score2++;
+                                                }
+                                            }
+                                        }
+                                    }
+                            }
+                        }
                 }
-                else if(x==2 && y==2)     //for redo
-                    goto a;
-               // else if(x==3 && y==3)  for undo
+                else if(x==2 && y==2)
+                {
+                    RL--;
+                    turn=URA[totalmoves+1][2];    //////
+                    Miki=URA[totalmoves+1][0];
+                    Tao=URA[totalmoves+1][1];
+                    if(Miki%2==0 && Tao%2!=0)               //// horizontal
+                    {
+                        if(URA[totalmoves+1][2]==1)
+                        {
+                            c1[Miki][Tao]=205;
+                            matrix[Miki][Tao]=205;
+                            counter1++;
+                            turn=2;
+                            if((URA[totalmoves+1][3]==1) || (URA[totalmoves+1][3]==2))
+                                turn=1;
+                        }
+                        else if(URA[totalmoves+1][2]==2)
+                        {
+                            c2[Miki][Tao]=205;
+                            matrix[Miki][Tao]=205;
+                            counter2++;
+                            turn=1;
+                            if((URA[totalmoves+1][3]==1) || (URA[totalmoves+1][3]==2))
+                                turn=2;
+                        }
 
+                    }
+                    else if(Miki%2!=0 && Tao%2==0)
+                    {
+                        if(URA[totalmoves+1][2]==1)
+                        {
+                            c1[Miki][Tao]=186;
+                            matrix[Miki][Tao]=186;
+                            counter1++;
+                            turn=2;
+                            if((URA[totalmoves+1][3]==1) || (URA[totalmoves+1][3]==2))
+                                turn=1;
+                        }
+                        else if(URA[totalmoves+1][2]==2)
+                        {
+                            c2[Miki][Tao]=186;
+                            matrix[Miki][Tao]=186;
+                            counter2++;
+                            turn=1;
+                            if((URA[totalmoves+1][3]==1) || (URA[totalmoves+1][3]==2))
+                                turn=2;
+                        }
+                        totalmoves++;
+                    }
+                    TC1=0;
+                    TC2=0;
 
+                    for(p=1;p<=BC;p+=2)
+                        {
+                            for(k=1;k<=BC;k+=2)
+                                {
+                                    if((matrix[p+1][k]!=32)&&(matrix[p-1][k]!=32)&&(matrix[p][k+1]!=32)&&(matrix[p][k-1]!=32))
+                                    {
+                                       if(URA[totalmoves][2]==1)
+                                       {
+                                           if(matrix[p][k]!=219)
+                                            {
+                                                score1++;
+                                                matrix[p][k]=219;
+                                                c1[p][k]=219;
+                                            }
+
+                                       }
+                                       else if(URA[totalmoves][2]==2)
+                                       {
+                                           if(matrix[p][k]!=219)
+                                            {
+                                                score2++;
+                                                matrix[p][k]=219;
+                                                c2[p][k]=219;
+                                            }
+                                        }
+                                    }
+                                }
+                        }
+                }
 
                 else if(matrix[x][y]==32 && ((x%2==0 && y%2!=0) || (x%2!=0 && y%2==0)))
                 {
-                    Nov--;
-                    RL=Nov;
+                    totalmoves++;
+                    lol=totalmoves;
+                    RL--;
                     if((x%2==0) && (y%2!=0))
                     {
                         if(turn==1)
@@ -388,7 +588,8 @@ void NewGame()
                         matrix[x][y]=186;
                     }
 
-
+                        TC1=0;
+                        TC2=0;
                         for(p=1;p<=BC;p+=2)
                         {
                             for(k=1;k<=BC;k+=2)
@@ -420,6 +621,47 @@ void NewGame()
                                 }
                         }
 
+                            URA[lol][0]=x;
+                            URA[lol][1]=y;
+                            URA[lol][2]=turn;
+                            if(turn==1)
+                            {
+                                if(sc1+1==score1)
+                                    {
+                                        URA[lol][3]=1;
+                                        sc1=score1;
+                                    }
+                                else if(sc1+2==score1)
+                                    {
+                                        URA[lol][3]=2;
+                                        sc1=score1;
+                                    }
+                                else if (sc1==score1)
+                                    {
+                                        URA[lol][3]=0;
+                                        sc1=score1;
+                                    }
+                            }
+                            else if(turn==2)
+                            {
+                                if(sc2+1==score2)
+                                    {
+                                        URA[lol][3]=1;
+                                        sc2=score2;
+                                    }
+                                else if(sc2+2==score2)
+                                    {
+                                        URA[lol][3]=2;
+                                        sc2=score2;
+                                    }
+                                else if (sc2==score2)
+                                    {
+                                        URA[lol][3]=0;
+                                        sc2=score2;
+                                    }
+                            }
+                            lol++;
+
 
                     if(TC1==1 || TC1==2)
                         {
@@ -450,6 +692,8 @@ void NewGame()
                     }
 
                 }
+
+
                 system("cls");
                 int i,j;
                 for(i=0;i<n;i++)
@@ -553,27 +797,25 @@ void NewGame()
                 printf("\n\n# of remaining lines: %d",RL);
                 printf(reset);
                 printf(L_BLU);
-                clock_t t3=(t2-t1)/CLOCKS_PER_SEC;
+                printf("\n\nPlayer Turn: %d",turn);
+                printf(reset);
+                printf("\n\n%d",totalmoves);
+
+                clock_t t3=(t2-t1)/CLOCKS_PER_SEC;                                          //time fn
                 minutes=t3/60;
                 seconds=t3%60;
                 if (minutes >= 60)
-                 {
-                 hours = minutes / 60;
-                 minutes = minutes % 60;
-                 }
-                printf("\t\tTime passed : %d:%d:%d",hours,minutes,seconds);
-
-                printf("\n\nEnter (0,0) for Start Menu");
-                printf("\nEnter (1,1) for EXIT");
-                printf("\nEnter (2,2) for REDO");
-                printf(reset);
+                {
+                    hours = minutes / 60;
+                    minutes = minutes % 60;
+                }
 
                 printf(L_BLU);
-                printf("\n\nPlayer Turn: %d",turn);
+                printf("\n\nTime passed : %d:%d:%d",hours,minutes,seconds);
                 printf(reset);
-                printf(L_YEL);
-
-
+                printf(L_BLU);
+                printf("\n\nEnter (0,0) for Start Menu");
+                printf(reset);
 
             }
             printf(L_MAG);
@@ -593,11 +835,41 @@ void NewGame()
 
 
 }
-
+char cc[N];
+void Creadits()
+{
+            printf(YEL"Creadits:\n*********\n"reset);
+            printf(YEL"Developed By:\n"reset);
+            printf(L_RED"Mkario Michel\n"reset);
+            printf(L_RED"Sama Zayed\n"reset);
+            printf("\nEnter 0 to return to StartMenu");
+            scanf("%s",&cc);
+            while(1)
+            {
+                if(cc[0]=='0'&& cc[1]=='\0')
+                {
+                    system("cls");
+                    StartMenu();
+                }
+                else
+                    scanf("%s",cc);
+            }
+}
 
 int main()
 {
     system("COLOR");
     StartMenu();
+    for(int loco=0;loco<12;loco++)
+    {
+        for(int kilo=0;kilo<4;kilo++)
+        {
+            printf("%d  ",URA[loco][kilo]);
+        }
+        printf("\n");
+
+    }
     return 0;
 }
+
+
